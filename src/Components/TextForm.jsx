@@ -41,6 +41,7 @@ function TextForm(props) {
         try {
             await navigator.clipboard.writeText(text);
             props.showAlert("Copied to Clipboard" , "success")
+            document.getSelection().removeAllRanges();
         } catch (err) {
             console.error('Unable to copy text to clipboard', err);
         }
@@ -65,16 +66,16 @@ function TextForm(props) {
             <div className="container">
                 <h1>{props.heading}</h1>
                 <textarea className="form-control" style={textBoxStyle} value={text} onChange={handelonChange} rows="12"></textarea>
-                <button className="btn btn-primary my-3" style={buttonStyle} onClick={handelUpClick} >Upper Case Text</button>
-                <button className="btn btn-primary my-3 mx-3" style={buttonStyle} onClick={handelLoClick} >Lower Case Text</button>
-                <button className="btn btn-primary" style={buttonStyle} onClick={handelClClick}>Clear Text</button>
-                <button className="btn btn-primary mx-3" style={buttonStyle} onClick={handelCoClick}>Copy To Clipboard</button>
-                <button className="btn btn-primary mx-3" style={buttonStyle} onClick={handelRsClick}>Remove Extra Spaces</button>
+                <button disabled = {text.length === 0} className="btn btn-primary my-3" style={buttonStyle} onClick={handelUpClick} >Upper Case Text</button>
+                <button disabled = {text.length === 0} className="btn btn-primary my-3 mx-3" style={buttonStyle} onClick={handelLoClick} >Lower Case Text</button>
+                <button disabled = {text.length === 0} className="btn btn-primary" style={buttonStyle} onClick={handelClClick}>Clear Text</button>
+                <button disabled = {text.length === 0} className="btn btn-primary mx-3" style={buttonStyle} onClick={handelCoClick}>Copy To Clipboard</button>
+                <button disabled = {text.length === 0} className="btn btn-primary mx-3" style={buttonStyle} onClick={handelRsClick}>Remove Extra Spaces</button>
             </div>
 
             <div className="container">
                 <h2>Text Summary</h2>
-                <p > {text.trim() === '' ? 0 : text.split(" ").length} words and {text.length}characters</p>
+                <p> {text.trim() === '' ? 0 : text.split(/\s+/).filter((element) =>{return element.length !== 0}).length} words and {text.length}characters</p>
                 <p>{0.008 * text.split(" ").length} Minutes to read</p>
             </div>
         </div>
